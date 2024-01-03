@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @NoArgsConstructor
+//@SuperBuilder(toBuilder = true) 안되어 버려
 @SuperBuilder
 @AllArgsConstructor
 public class Article extends BaseEntity {

@@ -1,40 +1,47 @@
 <script>
     let articles = $state([]);
+    import { onMount } from "svelte";
+    import moment from 'moment/min/moment-with-locales'
+    moment.locale('ko')
 
-    $effect(() => {
+    onMount(() => {
         fetch('http://localhost:8080/api/v1/articles')
             .then(response => response.json())
             .then(json => articles = json.data.articles);
     });
+
 </script>
 
-<div class="container items-center">
-    <h1 class="text-3xl font-bold underline">Articles</h1>
-    <hr>
-    <table class="table-fixed mt-5">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>createDate</th>
+<div>
+    
+    <table class="table text-center">
+
+        <thead class="table-dark">
+          <tr class="row">
+            <th class="col-1">Id</th>
+            <th class="col-9">Title</th>
+            <th class="col-2">createDate</th>
           </tr>
         </thead>
+
         <tbody>
             {#each articles as article}
-            <tr>
-                <td>
+            <tr class="row">
+                <td class="col-1">
                     <span>{article.id}</span>
                 </td>
-                <td class="color">
+                <td class="col-9 text-start">
                     <a href="/article/detail/{article.id}">{article.title}</a>
                 </td>
-                <td>
-                    <span>{article.createDate}</span>
+                <td class="col-2">
+                    <span>{moment(article.createDate).format("YYYY-MM-DD")}</span>
                 </td>
             </tr>
-        {/each}
+            {/each}
         </tbody>
+
       </table>
-      <a href="/article/create">등록하기</a>
+
+      <a class="btn-sm btn-primary text-decoration-none float-end " href="/article/create">등록하기</a>
 
 </div>

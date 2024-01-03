@@ -28,10 +28,34 @@ public class ArticleService {
     }
 
     public List<Article> findAll() {
-        return articleRepository.findAll();
+        return articleRepository.findAllByOrderByIdDesc();
     }
 
     public Optional<Article> findById(long id) {
         return articleRepository.findById(id);
+    }
+
+    public RsData<String> deleteArticle(long id) {
+        Optional<Article> article = findById(id);
+
+        if(article.isEmpty()) return RsData.of("200","없는 게시글이다리",id + "");
+
+        articleRepository.delete(article.get());
+        return RsData.of("200","삭제되었다리",article.get().getId().toString());
+    }
+
+    public RsData<Article> modifyArticle(long id, String title, String body) {
+        Optional<Article> article = findById(id);
+
+        if(article.isEmpty()) return RsData.of("200","없는 게시글이다리",null);
+
+        Article getArticle = article.get();
+        getArticle.setTitle(title);
+        getArticle.setBody(body);
+        getArticle.setModifyDate(LocalDateTime.now());
+
+        articleRepository.save(getArticle);
+
+        return RsData.of("200","수정했다리",getArticle);
     }
 }

@@ -6,9 +6,11 @@ import com.example.Mockexam.global.rsData.RsData;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/articles")
@@ -16,6 +18,39 @@ import java.util.List;
 public class ApiV1ArticleController {
 
     private final ArticleService articleService;
+
+    // 수정 나중에 DTO를 생각해서 일단 만들어놓자
+    @Getter
+    @Setter
+    public static class ModifyArticleRequestBody{
+        private long id;
+        private String title;
+        private String body;
+    }
+
+    @Getter
+    public static class ModifyArticleResponseBody{
+        Article article;
+
+        public ModifyArticleResponseBody(Article article){
+            this.article = article;
+        }
+    }
+
+    @PutMapping("")
+    @ResponseBody
+    public RsData<ModifyArticleResponseBody> modifyArticle(@RequestBody ModifyArticleRequestBody body){
+        RsData<Article> rsDataArticle = articleService.modifyArticle(body.getId(),body.getTitle(),body.getBody());
+
+        return RsData.of(rsDataArticle.getResultCode(),rsDataArticle.getMsg(),new ModifyArticleResponseBody(rsDataArticle.getData()));
+    }
+
+    // 삭제
+    @DeleteMapping("{id}")
+    @ResponseBody
+    public RsData<String> deleteArticle(@PathVariable long id){
+        return articleService.deleteArticle(id);
+    }
 
     // 단건 조회
     @Getter
@@ -49,13 +84,6 @@ public class ApiV1ArticleController {
     public RsData<GetArticlesResponseBody> getArticles(){
         return RsData.of("200","다건조회", new GetArticlesResponseBody(articleService.findAll()));
     }
-
-
-
-
-
-
-
 
     // 등록
     @Getter
