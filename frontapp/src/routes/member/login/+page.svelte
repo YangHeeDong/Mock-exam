@@ -45,12 +45,12 @@
 <h3>Login</h3>
 <form on:submit|preventDefault={submitLoginForm}>
     <div class="input-group">
-        <span class="input-group-text bg-dark text-white border-dark">Login Id</span>
+        <span class="input-group-text bg-dark text-white border-dark col-1 col-sm-3 justify-content-center ">Login Id</span>
         <input type="text" name="loginId" class="form-control border-dark" placeholder="Enter Login Id" aria-describedby="basic-addon1">
     </div>
 
     <div class="input-group mt-2">
-        <span class="input-group-text bg-dark text-white border-dark">Password</span>
+        <span class="input-group-text bg-dark text-white border-dark col-1 col-sm-3 justify-content-center ">Password</span>
         <input type="password" name="password" class="form-control border-dark" placeholder="Enter Password" aria-describedby="basic-addon1">
     </div>
 

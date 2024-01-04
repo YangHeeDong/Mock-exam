@@ -69,23 +69,20 @@
 <h3>Join</h3>
 <form on:submit|preventDefault={submitLoginForm} class="">
     <div class="input-group">
-        <div class="row">
-
-        </div>
-        <span class="col-sm-2 input-group-text bg-dark text-white border-dark">Login Id</span>
-        <input type="col-sm-10 text" name="loginId" class="form-control border-dark" placeholder="Enter Login Id" aria-describedby="basic-addon1">
+        <span class="col-2 input-group-text bg-dark text-white border-dark justify-content-center ">Login Id</span>
+        <input type="text" name="loginId" class="form-control border-dark" placeholder="Enter Login Id" aria-describedby="basic-addon1">
     </div>
 
     <div class="input-group mt-2">
-        <span class="input-group-text bg-dark text-white border-dark">Password</span>
+        <span class="col-2 input-group-text bg-dark text-white border-dark justify-content-center ">Password</span>
         <input type="password" name="password" class="form-control border-dark" placeholder="Enter Password" aria-describedby="basic-addon1">
     </div>
     <div class="input-group mt-2">
-        <span class="input-group-text bg-dark text-white border-dark">Password Confirm</span>
+        <span class="col-sm-3 col-md-2 col-sm-4 input-group-text bg-dark text-white border-dark justify-content-center ">Password Confirm</span>
         <input type="password" name="passwordConfirm" class="form-control border-dark" placeholder="Enter PasswordConfirm" aria-describedby="basic-addon1">
     </div>
     <div class="input-group mt-2">
-        <span class="input-group-text bg-dark text-white border-dark">Email</span>
+        <span class="col-2 input-group-text bg-dark text-white border-dark justify-content-center ">Email</span>
         <input type="email" name="email" class="form-control border-dark" placeholder="Enter Email" aria-describedby="basic-addon1">
     </div>
 
