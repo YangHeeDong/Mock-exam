@@ -1,7 +1,10 @@
 package com.example.Mockexam.domain.member.controller;
 
+import com.example.Mockexam.domain.member.dto.MemberDto;
 import com.example.Mockexam.domain.member.entity.Member;
 import com.example.Mockexam.domain.member.service.MemberService;
+import com.example.Mockexam.global.exceptions.GlobalException;
+import com.example.Mockexam.global.rq.Rq;
 import com.example.Mockexam.global.rsData.RsData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,10 +23,10 @@ import java.util.Optional;
 public class ApiV1MemberController {
 
     private final MemberService memberService;
+    private final Rq rq;
 
     // 로그인
     @Getter
-    @Setter
     public static class loginMemberRequestBody{
         private String loginId;
         private String password;
@@ -31,18 +34,25 @@ public class ApiV1MemberController {
 
 
     @AllArgsConstructor
+    @Getter
     public static class loginMemberResponseBody{
-        private String accessToken;
-        private String refreshToken;
+        private MemberDto memberDto;
     }
 
     @PostMapping("/login")
     @ResponseBody
     public RsData<loginMemberResponseBody> loginMember(@RequestBody loginMemberRequestBody body){
         RsData<MemberService.AuthAndMakeTokensResponseBody> rsData = memberService.loginMember(body.loginId, body.password);
-        return RsData.of(rsData.getResultCode(), rsData.getMsg(), new loginMemberResponseBody(rsData.getData().getAccessToken(), rsData.getData().getRefreshToken()));
-    }
 
+        rq.setCrossDomainCookie("accessToken", rsData.getData().getAccessToken());
+        rq.setCrossDomainCookie("refreshToken", rsData.getData().getRefreshToken());
+
+        return RsData.of(rsData.getResultCode(),
+                        rsData.getMsg(),
+                        new loginMemberResponseBody(
+                            new MemberDto(rsData.getData().getMember()))
+                        );
+    }
 
     // 회원가입
     @Getter
@@ -60,11 +70,11 @@ public class ApiV1MemberController {
 
         // password 일치여부
         if (!body.password.trim().equals(body.passwordConfirm.trim()))
-            return RsData.of("417", "비밀번호와 비빌번호 확인이 일치하지 않습니다.", null);
+            throw new GlobalException("417","비밀번호와 비밀번호 확인이 달라요~");
 
         // Id 중복체크
         Optional<Member> member = memberService.getMemberByLoginId(body.loginId);
-        if (!member.isEmpty()) return RsData.of("417", "중복된 아이디가 있습니다.", null);
+        if (!member.isEmpty()) throw new GlobalException("417","해당 아이디의 회원이 이미 있어요~");
 
         // 저장
         return memberService.joinMember(body.loginId, body.password, body.email);

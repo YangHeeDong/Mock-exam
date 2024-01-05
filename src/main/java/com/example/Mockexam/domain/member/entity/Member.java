@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +22,7 @@ public class Member extends BaseEntity {
     private String password;
     private String email;
 
+    public List<String> getAuthoritiesAsStringList() {
+        return List.of("ROLE_MEMBER");
+    }
 }

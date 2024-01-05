@@ -23,6 +23,7 @@
 
         fetch('http://localhost:8080/api/v1/member/login', {
             method: 'POST',
+            credentials:'include',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -33,6 +34,7 @@
         })
         .then(response => response.json())
         .then(rs => {
+
             // 로그인결과
             // window.location.href = "/article/detail/"+rs.data.article.id;
         })
